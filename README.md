@@ -22,10 +22,13 @@ appbuilder = AppBuilder(app, db.session, security_manager_class=OIDCSecurityMana
 Airflow provides a hook in the `webserver_config.py` file where you can specify a security manager class.
 In `webserver_config.py` import the OIDCSecurityManager and set
 ```python
-from fab_oidc.security import OIDCSecurityManager
+from fab_oidc.security import AirflowOIDCSecurityManager
 ...
-SECURITY_MANAGER_CLASS = OIDCSecurityManager
+SECURITY_MANAGER_CLASS = AirflowOIDCSecurityManager
 ```
+
+Airflow now requires that your `SECURITY_MANAGER_CLASS` is a subclass of `AirflowSecurityManager`. 
+Use the special `AirflowOIDCSecurityManager` that is only defined if you're using this library alongside Airflow.
 
 ### [Superset]
 Superset works the same way except the config is in a file called `superset_config.py` and the hook is called `CUSTOM_SECURITY_MANAGER`

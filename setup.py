@@ -17,7 +17,7 @@ def desc():
 
 setup(
     name='fab_oidc',
-    version='0.0.2',
+    version='0.0.3',
     url='https://github.com/ministryofjustice/fab-oidc/',
     license='MIT',
     author='ministryofjustice',
