@@ -27,20 +27,26 @@ from fab_oidc.security import AirflowOIDCSecurityManager
 SECURITY_MANAGER_CLASS = AirflowOIDCSecurityManager
 ```
 
-Airflow now requires that your `SECURITY_MANAGER_CLASS` is a subclass of `AirflowSecurityManager`. 
+Airflow now requires that your `SECURITY_MANAGER_CLASS` is a subclass of `AirflowSecurityManager`.
 Use the special `AirflowOIDCSecurityManager` that is only defined if you're using this library alongside Airflow.
 
 ### [Superset]
-Superset works the same way except the config is in a file called `superset_config.py` and the hook is called `CUSTOM_SECURITY_MANAGER`
+Superset works in a a similar way. Just as in Airflow,
+`SECURITY_MANAGER_CLASS` needs to be a subclass of `SupersetSecurityManager`
+the config is in a file called `superset_config.py` and the hook is called
+`CUSTOM_SECURITY_MANAGER`. There now exists a special
+`SupersetOIDCSecurityManager` that is only defined if you are using this
+library alongside Superset.
+
 ```python
-from fab_oidc.security import OIDCSecurityManager
+from fab_oidc.security import SupersetOIDCSecurityManager
 ...
-CUSTOM_SECURITY_MANAGER = OIDCSecurityManager
+CUSTOM_SECURITY_MANAGER = SupersetOIDCSecurityManager
 ```
 
 
 ## Settings
-The settings are the same as the [flask_oidc settings][flask_oidc_settings], so look there for a reference. 
+The settings are the same as the [flask_oidc settings][flask_oidc_settings], so look there for a reference.
 
 if you're happy with [flask_oidc]'s defaults the only thing you'll really need is something like:
 
