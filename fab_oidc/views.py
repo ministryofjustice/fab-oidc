@@ -7,7 +7,7 @@ from urllib.parse import quote
 
 
 # Set the OIDC field that should be used as a username
-USERNAME_OIDC_FIELD = os.getenv('CONF_USERNAME_OIDC_FIELD' ,default='preferred_username')
+USERNAME_OIDC_FIELD = os.getenv('CONF_USERNAME_OIDC_FIELD', default='sub')
 
 class AuthOIDCView(AuthOIDView):
 
