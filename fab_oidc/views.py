@@ -1,9 +1,13 @@
+import os
 from flask import redirect, request
 from flask_appbuilder.security.views import AuthOIDView
 from flask_login import login_user
 from flask_admin import expose
 from urllib.parse import quote
 
+
+# Set the OIDC field that should be used as a username
+USERNAME_OIDC_FIELD = os.getenv('USERNAME_OIDC_FIELD', default='sub')
 
 class AuthOIDCView(AuthOIDView):
 
@@ -19,11 +23,11 @@ class AuthOIDCView(AuthOIDView):
 
             if user is None:
                 info = oidc.user_getinfo(
-                    ['sub', 'name', 'email', 'nickname']
+                    [USERNAME_OIDC_FIELD, 'name', 'email', 'nickname']
                 )
 
                 user = sm.add_user(
-                    username=info.get('sub'),
+                    username=info.get(USERNAME_OIDC_FIELD),
                     first_name=info.get('nickname'),
                     last_name=info.get('name'),
                     email=info.get('email'),
@@ -66,14 +70,14 @@ class SupersetAuthOIDCView(AuthOIDView):
 
             if user is None:
                 info = oidc.user_getinfo(
-                    ['sub', 'given_name', 'family_name', 'email']
+                    [USERNAME_OIDC_FIELD, 'given_name', 'family_name', 'email']
                 )
 
                 # Superset requires `first_name` not to be NULL, so we use the
                 # `given_name` rather than `nickname`, which has higher
                 # probability for being NULL
                 user = sm.add_user(
-                    username=info.get('sub'),
+                    username=info.get(USERNAME_OIDC_FIELD),
                     first_name=info.get('given_name'),
                     last_name=info.get('family_name'),
                     email=info.get('email'),
