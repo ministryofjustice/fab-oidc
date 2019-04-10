@@ -57,10 +57,15 @@ OIDC_CLIENT_SECRETS = '/path/to/client_secret.json'
 see the [flask_oidc manual client registration][flask_oidc_manual_config] docs for how to generate or write one.
 
 ### OIDC Field configuration
-If you like to change the default OIDC field that will be used as a username, you can set the following env var in the shell you run your process:
+
+If you like to change the default OIDC field that will be used as a username,
+first name and last name you can set the following env var in the shell you run
+your process:
 
 ```bash
 export USERNAME_OIDC_FIELD='preferred_username'
+export FIRST_NAME_OIDC_FIELD='given_name'
+export LAST_NAME_OIDC_FIELD='family_name'
 ```
 
 Copyright © 2018 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
@@ -70,4 +75,4 @@ Copyright © 2018 HM Government (Ministry of Justice Digital Services). See LICE
 [flask_oidc_settings]: http://flask-oidc.readthedocs.io/en/latest/#settings-reference
 [flask_oidc_manual_config]: http://flask-oidc.readthedocs.io/en/latest/#manual-client-registration
 [Airflow]: https://airflow.apache.org/
-[Superset]: https://superset.incubator.apache.org/
+ [Superset]: https://superset.incubator.apache.org/
