@@ -27,9 +27,12 @@ class AuthOIDCView(AuthOIDView):
             user = sm.auth_user_oid(oidc.user_getfield('email'))
 
             if user is None:
-                info = oidc.user_getinfo(
-                    [USERNAME_OIDC_FIELD, 'name', 'email', 'nickname']
-                )
+                info = oidc.user_getinfo([
+                    USERNAME_OIDC_FIELD,
+                    FIRST_NAME_OIDC_FIELD,
+                    LAST_NAME_OIDC_FIELD,
+                    'email',
+                ])
 
                 user = sm.add_user(
                     username=info.get(USERNAME_OIDC_FIELD),
