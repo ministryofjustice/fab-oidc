@@ -12,6 +12,7 @@ FIRST_NAME_OIDC_FIELD = os.getenv('FIRST_NAME_OIDC_FIELD',
                                   default='nickname')
 LAST_NAME_OIDC_FIELD = os.getenv('LAST_NAME_OIDC_FIELD',
                                  default='name')
+GROUPS_OIDC_FIELD = os.getenv('GROUPS_OIDC_FIELD', default='groups')
 
 
 class AuthOIDCView(AuthOIDView):
@@ -25,6 +26,7 @@ class AuthOIDCView(AuthOIDView):
         @self.appbuilder.sm.oid.require_login
         def handle_login():
             user = sm.auth_user_oid(oidc.user_getfield('email'))
+            groups = oidc.user_getfield(GROUPS_OIDC_FIELD)
 
             if user is None:
                 info = oidc.user_getinfo([
@@ -41,6 +43,9 @@ class AuthOIDCView(AuthOIDView):
                     email=info.get('email'),
                     role=sm.find_role(sm.auth_user_registration_role)
                 )
+
+            if groups is not None:
+                AuthOIDCView.sync_roles(groups, user, sm)
 
             login_user(user, remember=False)
             return redirect(self.appbuilder.get_url_for_index)
@@ -63,3 +68,22 @@ class AuthOIDCView(AuthOIDView):
             logout_uri = self.appbuilder.app.config['OIDC_LOGOUT_URI']
 
         return redirect(logout_uri + quote(redirect_url))
+
+    def sync_roles(groups, user, sm):
+        # sync OIDC groups to roles
+        for role in user.roles:
+            if role.name not in groups and role.name not in [
+                sm.auth_role_admin,
+                sm.auth_user_registration_role]:
+                user.roles.remove(role)
+
+        if sm.get_session.is_modified(user):
+            sm.update_user(user)
+
+        for group in groups:
+            role = sm.find_role(group)
+            if role is not None:
+                user.roles.append(role)
+
+        if sm.get_session.is_modified(user):
+            sm.update_user(user)

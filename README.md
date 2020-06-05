@@ -59,14 +59,21 @@ see the [flask_oidc manual client registration][flask_oidc_manual_config] docs f
 ### OIDC Field configuration
 
 If you like to change the default OIDC field that will be used as a username,
-first name and last name you can set the following env var in the shell you run
+first name, last name and groups, you can set the following env var in the shell you run
 your process:
 
 ```bash
 export USERNAME_OIDC_FIELD='preferred_username'
 export FIRST_NAME_OIDC_FIELD='given_name'
 export LAST_NAME_OIDC_FIELD='family_name'
+export GROUPS_OIDC_FIELD='groups'
 ```
+
+### groups and roles syncronization
+
+If your IDP is configure to send back groups in ID tokens, you can syncronize your local roles with your IDP groups.
+To accomplish this, your local role names must match groups in your IDP. Exceptions are `AUTH_ROLE_ADMIN` and `AUTH_USER_REGISTRATION_ROLE` which are not synchronized.
+
 
 Copyright © 2018 HM Government (Ministry of Justice Digital Services). See LICENSE.txt for further details.
 
