@@ -71,19 +71,19 @@ class AuthOIDCView(AuthOIDView):
 
     def sync_roles(groups, user, sm):
         # sync OIDC groups to roles
+        updated = False
         for role in user.roles:
             if role.name not in groups and role.name not in [
                 sm.auth_role_admin,
                 sm.auth_user_registration_role]:
                 user.roles.remove(role)
-
-        if sm.get_session.is_modified(user):
-            sm.update_user(user)
+                updated = True
 
         for group in groups:
             role = sm.find_role(group)
             if role is not None:
                 user.roles.append(role)
+                updated = True
 
-        if sm.get_session.is_modified(user):
+        if updated:
             sm.update_user(user)
