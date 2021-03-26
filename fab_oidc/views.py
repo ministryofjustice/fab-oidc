@@ -42,7 +42,7 @@ class AuthOIDCView(AuthOIDView):
                     role=sm.find_role(sm.auth_user_registration_role)
                 )
 
-            login_user(user, remember=False)
+            login_user(user, remember=False, force=True)
             return redirect(self.appbuilder.get_url_for_index)
 
         return handle_login()
