@@ -1,4 +1,6 @@
 import os
+import json
+from base64 import b64decode
 from flask import redirect, request
 from flask_appbuilder.security.views import AuthOIDView
 from flask_login import login_user
@@ -13,6 +15,10 @@ FIRST_NAME_OIDC_FIELD = os.getenv('FIRST_NAME_OIDC_FIELD',
 LAST_NAME_OIDC_FIELD = os.getenv('LAST_NAME_OIDC_FIELD',
                                  default='name')
 
+def has_keycloak_role(o, client, role):
+    pre, tkn, post = o.get_access_token().split('.')
+    access_token = json.loads(b64decode(tkn))
+    role in access_token['resource_access'][client]['roles']
 
 class AuthOIDCView(AuthOIDView):
 
@@ -35,10 +41,10 @@ class AuthOIDCView(AuthOIDView):
                     'groups'
                 ])
 
-                if 'AirflowOperator' in info.get('groups'):
-                  role = 'Op'
-                elif 'AirflowAdmin' in info.get('groups'):
-                  role = 'Admin'
+                if has_keycloak_role(oidc, 'airflow', 'AirflowOperator'):
+                  role = sm.find_role('Op')
+                elif has_keycloak_role(oidc, 'airflow', 'AirflowAdmin'):
+                  role = sm.find_role('Admin')
                 else:
                   role = sm.find_role(sm.auth_user_registration_role)
                   
