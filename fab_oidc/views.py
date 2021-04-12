@@ -32,14 +32,22 @@ class AuthOIDCView(AuthOIDView):
                     FIRST_NAME_OIDC_FIELD,
                     LAST_NAME_OIDC_FIELD,
                     'email',
+                    'groups'
                 ])
 
+                if 'AirflowOperator' in info.get('groups'):
+                  role = 'Op'
+                elif 'AirflowAdmin' in info.get('groups'):
+                  role = 'Admin'
+                else:
+                  role = sm.find_role(sm.auth_user_registration_role)
+                  
                 user = sm.add_user(
                     username=info.get(USERNAME_OIDC_FIELD),
                     first_name=info.get(FIRST_NAME_OIDC_FIELD),
                     last_name=info.get(LAST_NAME_OIDC_FIELD),
                     email=info.get('email'),
-                    role=sm.find_role(sm.auth_user_registration_role)
+                    role=role
                 )
 
             login_user(user, remember=False, force=False)
