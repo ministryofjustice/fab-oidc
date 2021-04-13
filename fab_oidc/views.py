@@ -43,10 +43,10 @@ class AuthOIDCView(AuthOIDView):
 
                 print(info)
                 
-                if has_keycloak_role(oidc, 'airflow', 'AirflowOperator'):
-                  role = sm.find_role('Op')
-                elif has_keycloak_role(oidc, 'airflow', 'AirflowAdmin'):
-                  role = sm.find_role('Admin')
+                if '/AirflowOperators' in info.get('groups'):
+                   role = sm.find_role('Op')
+                elif '/AirflowAdmins' in info.get('groups'):
+                   role = sm.find_role('Admin')
                 else:
                   role = sm.find_role(sm.auth_user_registration_role)
                   
