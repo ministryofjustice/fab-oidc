@@ -15,10 +15,6 @@ FIRST_NAME_OIDC_FIELD = os.getenv('FIRST_NAME_OIDC_FIELD',
 LAST_NAME_OIDC_FIELD = os.getenv('LAST_NAME_OIDC_FIELD',
                                  default='name')
 
-def has_keycloak_role(o, client, role):
-    pre, tkn, post = o.get_access_token().split('.')
-    access_token = json.loads(b64decode(tkn))
-    role in access_token['resource_access'][client]['roles']
 
 class AuthOIDCView(AuthOIDView):
 
