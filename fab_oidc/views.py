@@ -36,8 +36,6 @@ class AuthOIDCView(AuthOIDView):
                     'email',
                     'groups'
                 ])
-
-                print(info)
                 
                 if '/AirflowOperators' in info.get('groups'):
                    role = sm.find_role('Op')
