@@ -37,10 +37,10 @@ class AuthOIDCView(AuthOIDView):
                     'groups'
                 ])
                 
-                if '/AirflowOperators' in info.get('groups'):
-                   role = sm.find_role('Op')
-                elif '/AirflowAdmins' in info.get('groups'):
+                if '/AirflowAdmins' in info.get('groups'):
                    role = sm.find_role('Admin')
+                elif '/AirflowOperators' in info.get('groups'):
+                   role = sm.find_role('Op')
                 else:
                   role = sm.find_role(sm.auth_user_registration_role)
                   
