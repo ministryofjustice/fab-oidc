@@ -9,7 +9,7 @@ from urllib.parse import quote
 
 
 # Set the OIDC field that should be used as a username
-USERNAME_OIDC_FIELD = os.getenv('USERNAME_OIDC_FIELD', default='sub')
+USERNAME_OIDC_FIELD = os.getenv('USERNAME_OIDC_FIELD', default='preferred_username')
 FIRST_NAME_OIDC_FIELD = os.getenv('FIRST_NAME_OIDC_FIELD',
                                   default='nickname')
 LAST_NAME_OIDC_FIELD = os.getenv('LAST_NAME_OIDC_FIELD',
@@ -39,7 +39,7 @@ class AuthOIDCView(AuthOIDView):
                 
                 print(info.get('groups'))
                 
-                if '/Admin' in info.get('groups'):
+                if 'Admin' in info.get('groups'):
                    role = sm.find_role('Admin')
                 elif '/Op' in info.get('groups'):
                    role = sm.find_role('Op')
