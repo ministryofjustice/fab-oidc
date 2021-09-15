@@ -34,12 +34,12 @@ class AuthOIDCView(AuthOIDView):
                     FIRST_NAME_OIDC_FIELD,
                     LAST_NAME_OIDC_FIELD,
                     'email',
-                    'roles'
+                    'groups'
                 ])
                                 
-                if 'admin' in info.get('roles'):
+                if 'admin' in info.get('groups'):
                    role = sm.find_role('Admin')
-                elif 'operator' in info.get('roles'):
+                elif 'operator' in info.get('groups'):
                    role = sm.find_role('Op')
                 else:
                   role = sm.find_role(sm.auth_user_registration_role)
