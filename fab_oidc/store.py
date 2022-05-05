@@ -1,11 +1,12 @@
-from werkzeug.contrib.cache import BaseCache
 from collections import UserDict
+
+from werkzeug.contrib.cache import BaseCache
 
 
 class WerkzeugCacheBackedCredentialStore(UserDict):
 
     def __init__(self, cache):
-        self.cache = cache # type: BaseCache
+        self.cache = cache  # type: BaseCache
 
     def __setitem__(self, key, value):
         return self.cache.set(key, value)

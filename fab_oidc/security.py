@@ -1,8 +1,10 @@
+from logging import getLogger
+
 from flask_appbuilder.security.manager import AUTH_OID
 from flask_appbuilder.security.sqla.manager import SecurityManager
 from flask_oidc import OpenIDConnect
+
 from .views import AuthOIDCView
-from logging import getLogger
 
 log = getLogger(__name__)
 
@@ -22,6 +24,7 @@ class OIDCSecurityManager(OIDCSecurityManagerMixin, SecurityManager):
 try:
     from airflow.www.security import AirflowSecurityManager
 
+
     class AirflowOIDCSecurityManager(OIDCSecurityManagerMixin, AirflowSecurityManager):
         pass
 
@@ -31,6 +34,7 @@ except ImportError:
 
     try:
         from airflow.www_rbac.security import AirflowSecurityManager
+
 
         class AirflowOIDCSecurityManager(
             OIDCSecurityManagerMixin, AirflowSecurityManager
@@ -42,6 +46,7 @@ except ImportError:
 
 try:
     from superset.security import SupersetSecurityManager
+
 
     class SupersetOIDCSecurityManager(
         OIDCSecurityManagerMixin, SupersetSecurityManager

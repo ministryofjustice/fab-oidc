@@ -1,12 +1,10 @@
 import os
-import json
-from base64 import b64decode
-from flask import redirect, request
-from flask_appbuilder.security.views import AuthOIDView
-from flask_login import login_user
-from flask_admin import expose
 from urllib.parse import quote
 
+from flask import redirect, request
+from flask_admin import expose
+from flask_appbuilder.security.views import AuthOIDView
+from flask_login import login_user
 
 # Set the OIDC field that should be used as a username
 USERNAME_OIDC_FIELD = os.getenv('USERNAME_OIDC_FIELD', default='preferred_username')
@@ -24,7 +22,7 @@ class AuthOIDCView(AuthOIDView):
         sm = self.appbuilder.sm
         oidc = sm.oid
 
-        @self.appbuilder.sm.oid.require_login
+        @self.appbuilder.sm.oid.loginhandler
         def handle_login():
             user = sm.auth_user_oid(oidc.user_getfield('email'))
 
@@ -36,14 +34,14 @@ class AuthOIDCView(AuthOIDView):
                     'email',
                     'groups'
                 ])
-                                
+
                 if 'airflow-admin' in info.get('groups'):
-                   role = sm.find_role('Admin')
+                    role = sm.find_role('Admin')
                 elif 'airflow-operator' in info.get('groups'):
-                   role = sm.find_role('Op')
+                    role = sm.find_role('Op')
                 else:
-                  role = sm.find_role(sm.auth_user_registration_role)
-                  
+                    role = sm.find_role(sm.auth_user_registration_role)
+
                 user = sm.add_user(
                     username=info.get(USERNAME_OIDC_FIELD),
                     first_name=info.get(FIRST_NAME_OIDC_FIELD),
