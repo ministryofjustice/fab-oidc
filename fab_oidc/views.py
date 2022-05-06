@@ -22,7 +22,7 @@ class AuthOIDCView(AuthOIDView):
         sm = self.appbuilder.sm
         oidc = sm.oid
 
-        @self.appbuilder.sm.oid.require_login
+        @self.appbuilder.sm.oid.loginhandler
         def handle_login():
             user = oidc.sm.auth_user_oid(oidc.user_getfield('email'))
 

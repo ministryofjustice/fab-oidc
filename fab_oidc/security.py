@@ -10,9 +10,9 @@ from .views import AuthOIDCView
 
 log = getLogger(__name__)
 
-issuer = os.getenv('ISSUER', 'https://keycloak.k8s.eltoro.com/auth/realms/keycloak')
-clientId = os.getenv('CLIENT_ID', 'flask-webapp')
-clientSecret = os.getenv('CLIENT_SECRET', 'lkkoQDUdJUqYDHXZBVDodw2ocvqJEflP')
+issuer = os.getenv('ISSUER', '')
+clientId = os.getenv('CLIENT_ID', '')
+clientSecret = os.getenv('CLIENT_SECRET', '')
 oidcDiscoveryUrl = f'{issuer}/.well-known/openid-configuration'
 
 class OIDCSecurityManagerMixin:
@@ -27,7 +27,7 @@ class OIDCSecurityManagerMixin:
                 server_metadata_url=oidcDiscoveryUrl,
                 client_kwargs={
                     'scope': 'openid email profile',
-                    'code_challenge_method': 'S256'  # enable PKCE
+                    'code_challenge_method': 'S256'
                 },
             )
             self.authoidview = AuthOIDCView
