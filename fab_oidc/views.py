@@ -24,7 +24,7 @@ class AuthOIDCView(AuthOIDView):
 
         @self.appbuilder.sm.oid.require_login
         def handle_login():
-            user = sm.auth_user_oid(oidc.user_getfield('email'))
+            user = oidc.sm.auth_user_oid(oidc.user_getfield('email'))
 
             if user is None:
                 info = oidc.user_getinfo([
